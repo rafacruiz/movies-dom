@@ -29,6 +29,7 @@
           <div class="flex-1">
             <div class="relative">
               <input
+                id="searchInput"
                 type="text"
                 placeholder="Buscar películas..."
                 class="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-2 pl-10 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -40,32 +41,38 @@
           <!-- Filtros por género -->
           <div class="flex flex-wrap gap-2">
             <button
-              class="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-lg text-sm font-medium transition-colors"
+              class="filter-btn bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-lg text-sm font-medium transition-colors" 
+              data-genre="Todos"
             >
               Todos
             </button>
             <button
-              class="bg-gray-700 hover:bg-gray-600 px-4 py-2 rounded-lg text-sm font-medium transition-colors"
+              class="filter-btn bg-gray-700 hover:bg-gray-600 px-4 py-2 rounded-lg text-sm font-medium transition-colors" 
+              data-genre="Acción"
             >
               Acción
             </button>
             <button
-              class="bg-gray-700 hover:bg-gray-600 px-4 py-2 rounded-lg text-sm font-medium transition-colors"
+              class="filter-btn bg-gray-700 hover:bg-gray-600 px-4 py-2 rounded-lg text-sm font-medium transition-colors" 
+              data-genre="Drama"
             >
               Drama
             </button>
             <button
-              class="bg-gray-700 hover:bg-gray-600 px-4 py-2 rounded-lg text-sm font-medium transition-colors"
+              class="filter-btn bg-gray-700 hover:bg-gray-600 px-4 py-2 rounded-lg text-sm font-medium transition-colors" 
+              data-genre="Comedia"
             >
               Comedia
             </button>
             <button
-              class="bg-gray-700 hover:bg-gray-600 px-4 py-2 rounded-lg text-sm font-medium transition-colors"
+              class="filter-btn bg-gray-700 hover:bg-gray-600 px-4 py-2 rounded-lg text-sm font-medium transition-colors" 
+              data-genre="Sci-Fi"
             >
               Sci-Fi
             </button>
             <button
-              class="bg-gray-700 hover:bg-gray-600 px-4 py-2 rounded-lg text-sm font-medium transition-colors"
+              class="filter-btn bg-gray-700 hover:bg-gray-600 px-4 py-2 rounded-lg text-sm font-medium transition-colors" 
+              data-genre="Terror"
             >
               Terror
             </button>
@@ -75,6 +82,7 @@
 
       <!-- Layout principal -->
       <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+
         <!-- Lista de películas populares -->
         <div class="lg:col-span-2">
           <h2 class="text-2xl font-bold mb-6 text-blue-400">
@@ -82,12 +90,14 @@
             Películas Populares
           </h2>
 
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div id="movies-grid" 
+            class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
             <!-- Película 1 -->
             <div
               id="movie-template"
-              class="bg-gray-800 rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow"
-            >
+              class="bg-gray-800 rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow">
+
               <div
                 class="h-64 bg-gradient-to-r from-purple-500 to-pink-500 flex items-center justify-center"
               >
@@ -97,8 +107,8 @@
                 <h3 class="text-xl font-bold mb-2">
                   Avatar: El Camino del Agua
                 </h3>
-                <p class="text-gray-400 text-sm mb-2">Sci-Fi, Aventura</p>
-                <p class="text-gray-300 text-sm mb-3">
+                <p class="movies-genre text-gray-400 text-sm mb-2">Sci-Fi, Aventura</p>
+                <p class="movies-description text-gray-300 text-sm mb-3">
                   Jake Sully vive con su nueva familia formada en el planeta de
                   Pandora. Cuando una amenaza familiar regresa para terminar lo
                   que se empezó anteriormente, Jake debe trabajar con Neytiri y
@@ -106,9 +116,9 @@
                 </p>
                 <div class="flex justify-between items-center">
                   <span class="text-yellow-400 font-semibold">
-                    <i class="fas fa-star mr-1"></i>8.5
+                    <i class="fas fa-star mr-1"></i><span class="movies-rating">8</span>
                   </span>
-                  <span class="text-gray-400 text-sm">192 min</span>
+                  <span class="movies-time text-gray-400 text-sm">192 min</span>
                   <button
                     class="bg-blue-600 hover:bg-blue-700 px-3 py-1 rounded text-sm transition-colors"
                   >
@@ -131,17 +141,23 @@
             <!-- Resumen de tiempo -->
             <div class="bg-gray-700 rounded-lg p-4 mb-6">
               <div class="text-center">
-                <div class="text-3xl font-bold text-green-400 mb-2">8h 23m</div>
+                <div 
+                  id="movies-times"
+                  class="text-3xl font-bold text-green-400 mb-2">8h 23m</div>
                 <div class="text-gray-400 text-sm">Tiempo total estimado</div>
               </div>
               <div class="mt-4 text-center">
-                <div class="text-lg font-semibold text-white">3 películas</div>
+                <div 
+                  id="movies-count"
+                  class="text-lg font-semibold text-white">3 películas</div>
                 <div class="text-gray-400 text-sm">en tu lista</div>
               </div>
             </div>
 
             <!-- Lista de películas en watchlist -->
-            <div class="space-y-4">
+            <div 
+              id="movies-watchlist"
+              class="space-y-4">
               <!-- Película 1 en watchlist -->
               <div
                 id="movie-watchlist-template"
@@ -156,12 +172,12 @@
                   </button>
                 </div>
                 <div class="flex justify-between text-sm text-gray-400">
-                  <span>Sci-Fi, Aventura</span>
-                  <span>192 min</span>
+                  <span class="list-genre">Sci-Fi, Aventura</span>
+                  <span class="list-times">192 min</span>
                 </div>
                 <div class="mt-2">
                   <span class="text-yellow-400 text-sm">
-                    <i class="fas fa-star mr-1"></i>8.5
+                    <i class="fas fa-star mr-1"></i><span class="list-rating">8.5</span>
                   </span>
                 </div>
               </div>
@@ -186,4 +202,7 @@
       </div>
     </div>
   </body>
+
+  <script src="js/movies.js"></script>
+  <script src="js/index.js"></script>
 </html>

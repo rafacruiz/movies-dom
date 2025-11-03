@@ -1,5 +1,5 @@
-let watchListMovies = [4,3,5];
-let genre = "Acción";
+let watchListMovies = [];
+let genre = "Todos";
 let searchMovie = "";
 
 const templateMovie = document.getElementById("movie-template");
@@ -11,6 +11,7 @@ templateWatchListMovie.removeAttribute("id");
 templateWatchListMovie.remove();
 
 render();
+listenerButton();
 
 function render() {
     renderLitsMovies();
@@ -25,8 +26,8 @@ function renderLitsMovies() {
     listMovies.innerText = "";
     
     movies
-        .filter((p) => p.genres.includes(genre) || genre === "todos")
-        .filter((p) => p.title.includes(searchMovie))
+        .filter((p) => p.genres.includes(genre) || genre === "Todos")
+        .filter((p) => p.title.toLowerCase().includes(searchMovie.toLowerCase()))
         .forEach(movie => {
         const movieDOM = templateMovie.cloneNode();
         movieDOM.innerHTML = templateMovie.innerHTML;
@@ -46,14 +47,22 @@ function renderLitsMovies() {
         const timeMovie = movieDOM.querySelector(".movies-time");
         timeMovie.innerHTML = movie.duration + " min";
 
+        movieDOM.querySelector("button").addEventListener("click", () => {
+
+            if (!watchListMovies.includes(movie.id)) {
+                watchListMovies.push(movie.id);
+            }
+            
+            render();
+        });
+
         listMovies.appendChild(movieDOM);
     });
 }
 
 function renderFilters() {
-    const buttonFilters = document.querySelectorAll(".filter-btn");
 
-    buttonFilters.forEach((button) => {
+    document.querySelectorAll(".filter-btn").forEach((button) => {
         if (button.dataset.genre === genre) { 
             button.classList.add("bg-blue-600", "text-white", "active");
             button.classList.remove("bg-gray-700");
@@ -62,9 +71,6 @@ function renderFilters() {
             button.classList.remove("bg-blue-600", "text-white", "active");
         }
     });
-
-    const buttonSearch = document.getElementById("searchInput");
-    buttonSearch.value = searchMovie;
 }
 
 function renderWatchListMovies() {
@@ -102,9 +108,43 @@ function renderWatchListMovies() {
         const movieRating = movieListDOM.querySelector(".list-rating");
         movieRating.innerText = movieIn.rating;
 
-        timesWatchList.innerText = totalTimeMovie + movieIn.duration;
-      
+        timesWatchList.innerText = totalTimeMovie += movieIn.duration;
+        timesWatchList.innerText += 'min'
+        
+        movieListDOM.querySelector("button").addEventListener("click", () => {            
+            watchListMovies = watchListMovies.filter((p) => p !== movie);
+
+            render();
+        });
+       
         ListMovies.appendChild(movieListDOM);
     });
 }
 
+function listenerButton() {
+
+    document
+        .querySelectorAll(".filter-btn").forEach((filter) => {
+            filter.addEventListener("click", (e) => {
+                genre = e.target.dataset.genre;
+
+                render();
+            });
+        });
+
+    document
+        .getElementById("searchInput")
+        .addEventListener("input", (e) => {
+            searchMovie = e.target.value;
+
+        render();
+    });
+
+    document
+        .getElementById("btn-empty")
+        .addEventListener("click", () => {
+            watchListMovies = [];
+
+        render();
+    });
+}
